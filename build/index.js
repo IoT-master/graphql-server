@@ -433,7 +433,56 @@ __webpack_require__.r(__webpack_exports__);
 
 const resolvers = {
   Query: {
-    hello: () => "Hello World!"
+    userByAge: (parent, {
+      age
+    }, context, info) => {
+      return _db__WEBPACK_IMPORTED_MODULE_0__["users"].find(user => user.age === age);
+    },
+    users: (parent, args, context, info) => {
+      return _db__WEBPACK_IMPORTED_MODULE_0__["users"];
+    },
+    userById: (parent, {
+      id
+    }, context, info) => {
+      return _db__WEBPACK_IMPORTED_MODULE_0__["users"].find(user => user.id === id);
+    }
+  },
+  Mutation: {
+    createUser: (parent, {
+      id,
+      name,
+      email,
+      age
+    }, context, info) => {
+      const newUser = {
+        id,
+        name,
+        email,
+        age
+      };
+      _db__WEBPACK_IMPORTED_MODULE_0__["users"].push(newUser);
+      return newUser;
+    },
+    updateUser: (parent, {
+      id,
+      name,
+      email,
+      age
+    }, context, info) => {
+      let newUser = _db__WEBPACK_IMPORTED_MODULE_0__["users"].find(user => user.id === id);
+      newUser.name = name;
+      newUser.email = email;
+      newUser.age = age;
+      return newUser;
+    },
+    deleteUser: (parent, {
+      id
+    }, context, info) => {
+      const userIndex = _db__WEBPACK_IMPORTED_MODULE_0__["users"].findIndex(user => user.id === id);
+      if (userIndex === -1) throw new Error("User not found.");
+      const deletedUsers = _db__WEBPACK_IMPORTED_MODULE_0__["users"].splice(userIndex, 1);
+      return deletedUsers[0];
+    }
   }
 };
 /* harmony default export */ __webpack_exports__["default"] = (resolvers);
@@ -448,8 +497,8 @@ const resolvers = {
 /***/ (function(module, exports) {
 
 
-    var doc = {"kind":"Document","definitions":[{"kind":"ObjectTypeDefinition","name":{"kind":"Name","value":"Query"},"interfaces":[],"directives":[],"fields":[{"kind":"FieldDefinition","name":{"kind":"Name","value":"hello"},"arguments":[],"type":{"kind":"NamedType","name":{"kind":"Name","value":"String"}},"directives":[]}]}],"loc":{"start":0,"end":31}};
-    doc.loc.source = {"body":"type Query {\n  hello: String\n}\n","name":"GraphQL request","locationOffset":{"line":1,"column":1}};
+    var doc = {"kind":"Document","definitions":[{"kind":"ObjectTypeDefinition","name":{"kind":"Name","value":"User"},"interfaces":[],"directives":[],"fields":[{"kind":"FieldDefinition","name":{"kind":"Name","value":"id"},"arguments":[],"type":{"kind":"NonNullType","type":{"kind":"NamedType","name":{"kind":"Name","value":"ID"}}},"directives":[]},{"kind":"FieldDefinition","name":{"kind":"Name","value":"name"},"arguments":[],"type":{"kind":"NonNullType","type":{"kind":"NamedType","name":{"kind":"Name","value":"String"}}},"directives":[]},{"kind":"FieldDefinition","name":{"kind":"Name","value":"email"},"arguments":[],"type":{"kind":"NonNullType","type":{"kind":"NamedType","name":{"kind":"Name","value":"String"}}},"directives":[]},{"kind":"FieldDefinition","name":{"kind":"Name","value":"age"},"arguments":[],"type":{"kind":"NamedType","name":{"kind":"Name","value":"Int"}},"directives":[]}]},{"kind":"ObjectTypeDefinition","name":{"kind":"Name","value":"Query"},"interfaces":[],"directives":[],"fields":[{"kind":"FieldDefinition","name":{"kind":"Name","value":"users"},"arguments":[],"type":{"kind":"NonNullType","type":{"kind":"ListType","type":{"kind":"NonNullType","type":{"kind":"NamedType","name":{"kind":"Name","value":"User"}}}}},"directives":[]},{"kind":"FieldDefinition","name":{"kind":"Name","value":"userByAge"},"arguments":[{"kind":"InputValueDefinition","name":{"kind":"Name","value":"age"},"type":{"kind":"NonNullType","type":{"kind":"NamedType","name":{"kind":"Name","value":"Int"}}},"directives":[]}],"type":{"kind":"NonNullType","type":{"kind":"NamedType","name":{"kind":"Name","value":"User"}}},"directives":[]},{"kind":"FieldDefinition","name":{"kind":"Name","value":"userById"},"arguments":[{"kind":"InputValueDefinition","name":{"kind":"Name","value":"id"},"type":{"kind":"NonNullType","type":{"kind":"NamedType","name":{"kind":"Name","value":"Int"}}},"directives":[]}],"type":{"kind":"NonNullType","type":{"kind":"NamedType","name":{"kind":"Name","value":"User"}}},"directives":[]}]},{"kind":"ObjectTypeDefinition","name":{"kind":"Name","value":"Mutation"},"interfaces":[],"directives":[],"fields":[{"kind":"FieldDefinition","name":{"kind":"Name","value":"createUser"},"arguments":[{"kind":"InputValueDefinition","name":{"kind":"Name","value":"id"},"type":{"kind":"NonNullType","type":{"kind":"NamedType","name":{"kind":"Name","value":"ID"}}},"directives":[]},{"kind":"InputValueDefinition","name":{"kind":"Name","value":"name"},"type":{"kind":"NonNullType","type":{"kind":"NamedType","name":{"kind":"Name","value":"String"}}},"directives":[]},{"kind":"InputValueDefinition","name":{"kind":"Name","value":"email"},"type":{"kind":"NonNullType","type":{"kind":"NamedType","name":{"kind":"Name","value":"String"}}},"directives":[]},{"kind":"InputValueDefinition","name":{"kind":"Name","value":"age"},"type":{"kind":"NamedType","name":{"kind":"Name","value":"Int"}},"directives":[]}],"type":{"kind":"NonNullType","type":{"kind":"NamedType","name":{"kind":"Name","value":"User"}}},"directives":[]},{"kind":"FieldDefinition","name":{"kind":"Name","value":"updateUser"},"arguments":[{"kind":"InputValueDefinition","name":{"kind":"Name","value":"id"},"type":{"kind":"NonNullType","type":{"kind":"NamedType","name":{"kind":"Name","value":"ID"}}},"directives":[]},{"kind":"InputValueDefinition","name":{"kind":"Name","value":"name"},"type":{"kind":"NamedType","name":{"kind":"Name","value":"String"}},"directives":[]},{"kind":"InputValueDefinition","name":{"kind":"Name","value":"email"},"type":{"kind":"NamedType","name":{"kind":"Name","value":"String"}},"directives":[]},{"kind":"InputValueDefinition","name":{"kind":"Name","value":"age"},"type":{"kind":"NamedType","name":{"kind":"Name","value":"Int"}},"directives":[]}],"type":{"kind":"NonNullType","type":{"kind":"NamedType","name":{"kind":"Name","value":"User"}}},"directives":[]},{"kind":"FieldDefinition","name":{"kind":"Name","value":"deleteUser"},"arguments":[{"kind":"InputValueDefinition","name":{"kind":"Name","value":"id"},"type":{"kind":"NonNullType","type":{"kind":"NamedType","name":{"kind":"Name","value":"ID"}}},"directives":[]}],"type":{"kind":"NonNullType","type":{"kind":"NamedType","name":{"kind":"Name","value":"User"}}},"directives":[]}]}],"loc":{"start":0,"end":433}};
+    doc.loc.source = {"body":"#https://medium.freecodecamp.org/a-beginners-guide-to-graphql-86f849ce1bec\n\ntype User {\n  id: ID!\n  name: String!\n  email: String!\n  age: Int\n}\n\ntype Query {\n    users: [User!]!\n    userByAge(age: Int!): User!\n    userById(id: Int!): User!\n}\n\ntype Mutation {\n    createUser(id: ID!, name: String!, email: String!, age: Int): User!\n    updateUser(id: ID!, name: String, email: String, age: Int): User!\n    deleteUser(id: ID!): User!\n}","name":"GraphQL request","locationOffset":{"line":1,"column":1}};
   
 
     var names = {};
